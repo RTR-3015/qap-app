@@ -3,73 +3,34 @@
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="mb-0 text-primary">🏗️ Fase 1 — Heurístico de construcción</h1>
-    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-sm">← Volver al menú</a>
+    <h1 class="mb-0 text-primary">Fase 1 — Heurístico de construcción</h1>
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-sm">Volver al menú</a>
 </div>
 
 {% if not tiene_datos %}
     <!-- Paso A: aún no hay matrices cargadas -->
-    <p class="text-muted">
-        Antes de construir una solución inicial, necesitas cargar las matrices
-        de flujo y distancia. Elige cómo quieres ingresarlas.
-    </p>
-
-    <div class="row g-4 mt-2">
-        <div class="col-md-6">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">✍️ Captura manual</h5>
-                    <p class="card-text text-muted">
-                        Indica el número de departamentos/ubicaciones y llena
-                        las matrices directamente en el navegador.
-                    </p>
-                    <form action="{{ url_for('fase1_generar_matrices') }}" method="post" class="row g-2">
-                        <div class="col-8">
-                            <input type="number" name="n" min="2" max="30" required
-                                   class="form-control" placeholder="Número de departamentos (n)">
-                        </div>
-                        <div class="col-4">
-                            <button type="submit" class="btn btn-primary w-100">Continuar</button>
-                        </div>
-                    </form>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Captura de datos</h5>
+            <p class="card-text text-muted">
+                Indica el número de departamentos/ubicaciones.
+            </p>
+            <form action="{{ url_for('fase1_generar_matrices') }}" method="post" class="row g-2">
+                <div class="col-8">
+                    <input type="number" name="n" min="2" max="30" required
+                           class="form-control" placeholder="Número de departamentos (n)">
                 </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">📁 Importar archivos</h5>
-                    <p class="card-text text-muted">
-                        Sube dos archivos (CSV o Excel) con la matriz de flujo
-                        y la matriz de distancia, ambas del mismo tamaño n&times;n.
-                    </p>
-                    <form action="{{ url_for('fase1_importar') }}" method="post" enctype="multipart/form-data">
-                        <div class="mb-2">
-                            <label class="form-label small">Matriz de flujo</label>
-                            <input type="file" name="archivo_flujo" accept=".csv,.xlsx,.xls"
-                                   class="form-control form-control-sm" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label small">Matriz de distancia</label>
-                            <input type="file" name="archivo_distancia" accept=".csv,.xlsx,.xls"
-                                   class="form-control form-control-sm" required>
-                        </div>
-                        <button type="submit" class="btn btn-outline-primary w-100">Subir e importar</button>
-                    </form>
+                <div class="col-4">
+                    <button type="submit" class="btn btn-primary w-100">Continuar</button>
                 </div>
-            </div>
+            </form>
         </div>
-    </div>
-
-    <div class="alert alert-info mt-4 small">
-        💡 Los archivos deben contener únicamente números, sin encabezados ni texto.
     </div>
 
 {% else %}
     <!-- Paso B: ya hay matrices cargadas -> elegir método y ejecutar -->
     <div class="alert alert-success d-flex justify-content-between align-items-center">
-        <span>✓ Datos cargados ({{ n }}&times;{{ n }})</span>
+        <span>Datos cargados ({{ n }}&times;{{ n }})</span>
         <a href="{{ url_for('fase1_reiniciar') }}" class="btn btn-sm btn-outline-secondary">
             Cambiar datos
         </a>
@@ -80,53 +41,89 @@
             <div class="card-header bg-light">
                 <strong>Selecciona el método de construcción</strong>
             </div>
-            <div class="card-body">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="radio" name="metodo_construccion"
-                           id="greedy_costo" value="greedy_costo" checked>
-                    <label class="form-check-label" for="greedy_costo">
-                        <strong>Método Greedy (costo combinado)</strong> &mdash; en cada paso elige
-                        el par departamento-ubicación que produce el menor incremento de costo
-                        acumulado (flujo &times; distancia conjuntamente).
-                    </label>
-                </div>
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="radio" name="metodo_construccion"
-                           id="mayores_flujos" value="mayores_flujos">
-                    <label class="form-check-label" for="mayores_flujos">
-                        <strong>Asignación basada en mayores flujos</strong> &mdash; asigna primero
-                        los departamentos con más flujo total a las ubicaciones más centrales.
-                    </label>
-                </div>
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="radio" name="metodo_construccion"
-                           id="menores_costos" value="menores_costos">
-                    <label class="form-check-label" for="menores_costos">
-                        <strong>Asignación basada en menores costos</strong> &mdash; recorre los
-                        departamentos en orden fijo y a cada uno le asigna la ubicación libre
-                        de menor costo marginal.
-                    </label>
-                </div>
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="radio" name="metodo_construccion"
-                           id="aleatorizada" value="aleatorizada">
-                    <label class="form-check-label" for="aleatorizada">
-                        <strong>Construcción aleatorizada</strong> &mdash; genera una permutación
-                        aleatoria como punto de partida.
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="metodo_construccion"
-                           id="semi_greedy" value="semi_greedy">
-                    <label class="form-check-label" for="semi_greedy">
-                        <strong>Construcción semi-greedy</strong> &mdash; combina criterio
-                        greedy con aleatoriedad controlada para diversificar soluciones.
-                    </label>
-                </div>
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle mb-0">
+                    <tbody>
+                        <tr>
+                            <td class="text-center" style="width: 50px;">
+                                <input class="form-check-input" type="radio" name="metodo_construccion"
+                                       id="greedy_costo" value="greedy_costo" checked>
+                            </td>
+                            <td style="width: 280px;">
+                                <label class="form-check-label fw-bold" for="greedy_costo">
+                                    Método Greedy (costo combinado)
+                                </label>
+                            </td>
+                            <td class="text-muted small">
+                                En cada paso elige el par departamento-ubicación que produce el
+                                menor incremento de costo acumulado (flujo &times; distancia conjuntamente).
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <input class="form-check-input" type="radio" name="metodo_construccion"
+                                       id="mayores_flujos" value="mayores_flujos">
+                            </td>
+                            <td>
+                                <label class="form-check-label fw-bold" for="mayores_flujos">
+                                    Asignación basada en mayores flujos
+                                </label>
+                            </td>
+                            <td class="text-muted small">
+                                Asigna primero los departamentos con más flujo total a las
+                                ubicaciones más centrales.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <input class="form-check-input" type="radio" name="metodo_construccion"
+                                       id="menores_costos" value="menores_costos">
+                            </td>
+                            <td>
+                                <label class="form-check-label fw-bold" for="menores_costos">
+                                    Asignación basada en menores costos
+                                </label>
+                            </td>
+                            <td class="text-muted small">
+                                Recorre los departamentos en orden fijo y a cada uno le asigna la
+                                ubicación libre de menor costo marginal.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <input class="form-check-input" type="radio" name="metodo_construccion"
+                                       id="aleatorizada" value="aleatorizada">
+                            </td>
+                            <td>
+                                <label class="form-check-label fw-bold" for="aleatorizada">
+                                    Construcción aleatorizada
+                                </label>
+                            </td>
+                            <td class="text-muted small">
+                                Genera una permutación aleatoria como punto de partida.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <input class="form-check-input" type="radio" name="metodo_construccion"
+                                       id="semi_greedy" value="semi_greedy">
+                            </td>
+                            <td>
+                                <label class="form-check-label fw-bold" for="semi_greedy">
+                                    Construcción semi-greedy
+                                </label>
+                            </td>
+                            <td class="text-muted small">
+                                Combina criterio greedy con aleatoriedad controlada para
+                                diversificar soluciones.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">🚀 Generar solución inicial</button>
+        <button type="submit" class="btn btn-primary">Generar solución inicial</button>
     </form>
 
     {% if resultado %}
@@ -155,7 +152,7 @@
             </div>
 
             <a href="{{ url_for('fase2') }}" class="btn btn-success mt-2">
-                Continuar a Fase 2 con esta solución →
+                Continuar a Fase 2
             </a>
         </div>
     </div>

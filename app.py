@@ -4,7 +4,7 @@ mediante heurísticos de construcción (Fase 1) y mejora (Fase 2).
 
 Flujo de navegación:
     /            -> Dashboard: elegir Fase 1 o Fase 2
-    /fase1       -> Captura/importación de datos + método de construcción
+    /fase1       -> Captura de datos + método de construcción
     /fase2       -> Selección de método de mejora (usa la última solución
                     inicial guardada en sesión, si existe)
 """
@@ -217,17 +217,10 @@ def fase1_ejecutar():
 @app.route("/fase2", methods=["GET"])
 def fase2():
     """
-    Acceso secuencial obligatorio: si no existe una solución inicial
-    (Fase 1) en sesión, se redirige a Fase 1 con un aviso, en lugar de
-    permitir ver la pantalla de Fase 2.
+    Acceso libre: la Fase 2 es accesible en cualquier momento. Si existe una
+    solución inicial (Fase 1) en sesión, se usa como punto de partida; si no
+    existe, se invita a generarla primero.
     """
-    if "resultado_fase1" not in session:
-        flash(
-            "Debes completar la Fase 1 (construcción) antes de pasar a la Fase 2.",
-            "error",
-        )
-        return redirect(url_for("fase1"))
-
     return render_template(
         "fase2.html",
         resultado_fase1=session.get("resultado_fase1"),

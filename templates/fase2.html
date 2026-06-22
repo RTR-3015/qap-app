@@ -3,18 +3,18 @@
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="mb-0 text-success">⚙️ Fase 2 — Heurístico de mejora</h1>
-    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-sm">← Volver al menú</a>
+    <h1 class="mb-0 text-success">Fase 2 — Heurístico de mejora</h1>
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-sm">Volver al menú</a>
 </div>
 
 {% if not resultado_fase1 %}
     <!-- No hay solución inicial todavía -->
     <div class="alert alert-warning">
-        ⚠️ Aún no tienes una <strong>solución inicial</strong> generada.
+        Aún no tienes una <strong>solución inicial</strong> generada.
         La Fase 2 necesita partir de un resultado de la Fase 1.
     </div>
     <a href="{{ url_for('fase1') }}" class="btn btn-primary">
-        Ir a Fase 1 para generar una solución inicial →
+        Ir a Fase 1 para generar una solución inicial
     </a>
 
 {% else %}
@@ -35,51 +35,90 @@
             <div class="card-header bg-light">
                 <strong>Selecciona el método de mejora</strong>
             </div>
-            <div class="card-body">
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="radio" name="metodo_mejora"
-                           id="swap_primera_mejora" value="swap_primera_mejora">
-                    <label class="form-check-label" for="swap_primera_mejora">
-                        <strong>Swap (primera mejora)</strong> &mdash; recorre los pares en orden
-                        aleatorio y aplica el primer intercambio que reduzca el costo.
-                    </label>
-                </div>
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="radio" name="metodo_mejora"
-                           id="busqueda_local_perturbacion" value="busqueda_local_perturbacion">
-                    <label class="form-check-label" for="busqueda_local_perturbacion">
-                        <strong>Búsqueda local con perturbación</strong> &mdash; aplica primera
-                        mejora hasta estancarse, luego perturba aleatoriamente y continúa.
-                    </label>
-                </div>
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="radio" name="metodo_mejora"
-                           id="descenso_maxima_pendiente" value="descenso_maxima_pendiente" checked>
-                    <label class="form-check-label" for="descenso_maxima_pendiente">
-                        <strong>Descenso de máxima pendiente</strong> &mdash; evalúa todos los
-                        intercambios posibles en cada iteración y aplica el mejor (más exhaustivo).
-                    </label>
-                </div>
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="radio" name="metodo_mejora"
-                           id="recocido_simulado" value="recocido_simulado">
-                    <label class="form-check-label" for="recocido_simulado">
-                        <strong>Recocido simulado</strong> &mdash; acepta soluciones peores con
-                        cierta probabilidad para escapar de óptimos locales.
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="metodo_mejora"
-                           id="busqueda_tabu" value="busqueda_tabu">
-                    <label class="form-check-label" for="busqueda_tabu">
-                        <strong>Búsqueda tabú</strong> &mdash; prohíbe revertir movimientos
-                        recientes durante un número de iteraciones para evitar ciclos.
-                    </label>
-                </div>
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle mb-0">
+                    <tbody>
+                        <tr>
+                            <td class="text-center" style="width: 50px;">
+                                <input class="form-check-input" type="radio" name="metodo_mejora"
+                                       id="swap_primera_mejora" value="swap_primera_mejora">
+                            </td>
+                            <td style="width: 280px;">
+                                <label class="form-check-label fw-bold" for="swap_primera_mejora">
+                                    Swap (primera mejora)
+                                </label>
+                            </td>
+                            <td class="text-muted small">
+                                Recorre los pares en orden aleatorio y aplica el primer
+                                intercambio que reduzca el costo.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <input class="form-check-input" type="radio" name="metodo_mejora"
+                                       id="busqueda_local_perturbacion" value="busqueda_local_perturbacion">
+                            </td>
+                            <td>
+                                <label class="form-check-label fw-bold" for="busqueda_local_perturbacion">
+                                    Búsqueda local con perturbación
+                                </label>
+                            </td>
+                            <td class="text-muted small">
+                                Aplica primera mejora hasta estancarse, luego perturba
+                                aleatoriamente y continúa.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <input class="form-check-input" type="radio" name="metodo_mejora"
+                                       id="descenso_maxima_pendiente" value="descenso_maxima_pendiente" checked>
+                            </td>
+                            <td>
+                                <label class="form-check-label fw-bold" for="descenso_maxima_pendiente">
+                                    Descenso de máxima pendiente
+                                </label>
+                            </td>
+                            <td class="text-muted small">
+                                Evalúa todos los intercambios posibles en cada iteración y
+                                aplica el mejor (más exhaustivo).
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <input class="form-check-input" type="radio" name="metodo_mejora"
+                                       id="recocido_simulado" value="recocido_simulado">
+                            </td>
+                            <td>
+                                <label class="form-check-label fw-bold" for="recocido_simulado">
+                                    Recocido simulado
+                                </label>
+                            </td>
+                            <td class="text-muted small">
+                                Acepta soluciones peores con cierta probabilidad para escapar
+                                de óptimos locales.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <input class="form-check-input" type="radio" name="metodo_mejora"
+                                       id="busqueda_tabu" value="busqueda_tabu">
+                            </td>
+                            <td>
+                                <label class="form-check-label fw-bold" for="busqueda_tabu">
+                                    Búsqueda tabú
+                                </label>
+                            </td>
+                            <td class="text-muted small">
+                                Prohíbe revertir movimientos recientes durante un número de
+                                iteraciones para evitar ciclos.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <button type="submit" class="btn btn-success">🚀 Ejecutar mejora</button>
+        <button type="submit" class="btn btn-success">Ejecutar mejora</button>
     </form>
 
     {% if resultado %}
@@ -113,10 +152,10 @@
 
             <div class="d-flex gap-2 mt-3">
                 <a href="{{ url_for('exportar_excel') }}" class="btn btn-outline-success btn-sm">
-                    📊 Exportar a Excel
+                    Exportar a Excel
                 </a>
                 <a href="{{ url_for('exportar_pdf') }}" class="btn btn-outline-danger btn-sm">
-                    📄 Exportar a PDF
+                    Exportar a PDF
                 </a>
             </div>
         </div>
