@@ -1,0 +1,40 @@
+body {
+    background-color: #f4f6f9;
+}
+
+.matriz-tabla input {
+    min-width: 60px;
+}
+
+.matriz-tabla th {
+    background-color: #f1f3f5;
+    font-size: 0.85rem;
+}
+
+.card-title {
+    font-weight: 600;
+}
+
+footer {
+    border-top: 1px solid #e0e0e0;
+}
+
+.fase-card {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    cursor: pointer;
+}
+
+.fase-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.12) !important;
+}
+
+.fase-icono {
+    font-size: 3rem;
+    line-height: 1;
+}
+
+.fase-card-bloqueada {
+    opacity: 0.85;
+    cursor: not-allowed;
+}

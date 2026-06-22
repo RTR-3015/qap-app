@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Inicio - QAP Solver{% endblock %}
+
+{% block content %}
+<div class="text-center mb-5">
+    <h1 class="mb-2">Problema de Asignación Cuadrática (QAP)</h1>
+    <p class="text-muted">
+        Elige la fase con la que quieres trabajar. Puedes entrar a cada una
+        de forma independiente.
+    </p>
+</div>
+
+<div class="row justify-content-center g-4">
+    <!-- Tarjeta Fase 1 -->
+    <div class="col-md-5">
+        <a href="{{ url_for('fase1') }}" class="text-decoration-none">
+            <div class="card h-100 shadow-sm fase-card border-primary">
+                <div class="card-body text-center py-5">
+                    <div class="fase-icono mb-3">🏗️</div>
+                    <h3 class="card-title text-primary">Fase 1</h3>
+                    <h5 class="card-subtitle mb-3 text-muted">Heurístico de construcción</h5>
+                    <p class="card-text">
+                        Captura o importa tus matrices de flujo y distancia,
+                        elige un método de construcción y genera una
+                        <strong>solución inicial factible</strong>.
+                    </p>
+                    {% if 'flujo' in session %}
+                        <span class="badge bg-success">Datos cargados ✓</span>
+                    {% endif %}
+                    <div class="mt-4">
+                        <span class="btn btn-primary">Ir a Fase 1 →</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- Tarjeta Fase 2 -->
+    <div class="col-md-5">
+        {% if 'resultado_fase1' in session %}
+        <a href="{{ url_for('fase2') }}" class="text-decoration-none">
+            <div class="card h-100 shadow-sm fase-card border-success">
+                <div class="card-body text-center py-5">
+                    <div class="fase-icono mb-3">⚙️</div>
+                    <h3 class="card-title text-success">Fase 2</h3>
+                    <h5 class="card-subtitle mb-3 text-muted">Heurístico de mejora</h5>
+                    <p class="card-text">
+                        Toma la solución inicial más reciente y aplica un
+                        método de mejora para obtener una
+                        <strong>solución de menor costo</strong>.
+                    </p>
+                    <span class="badge bg-success">Solución inicial disponible ✓</span>
+                    <div class="mt-4">
+                        <span class="btn btn-success">Ir a Fase 2 →</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+        {% else %}
+        <div class="card h-100 shadow-sm fase-card-bloqueada border-secondary">
+            <div class="card-body text-center py-5">
+                <div class="fase-icono mb-3 opacity-50">🔒</div>
+                <h3 class="card-title text-secondary">Fase 2</h3>
+                <h5 class="card-subtitle mb-3 text-muted">Heurístico de mejora</h5>
+                <p class="card-text text-muted">
+                    Toma la solución inicial más reciente y aplica un
+                    método de mejora para obtener una
+                    <strong>solución de menor costo</strong>.
+                </p>
+                <span class="badge bg-secondary">Completa primero la Fase 1</span>
+                <div class="mt-4">
+                    <span class="btn btn-secondary disabled">🔒 Bloqueada</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="alert alert-info mt-5 small text-center">
+    💡 El flujo es secuencial: primero debes generar una solución inicial en
+    la Fase 1 para poder acceder a la Fase 2. Puedes regresar a la Fase 1 en
+    cualquier momento para generar una nueva solución inicial con otro método.
+</div>
+{% endblock %}

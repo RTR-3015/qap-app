@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block title %}Fase 2 - Mejora{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0 text-success">⚙️ Fase 2 — Heurístico de mejora</h1>
+    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary btn-sm">← Volver al menú</a>
+</div>
+
+{% if not resultado_fase1 %}
+    <!-- No hay solución inicial todavía -->
+    <div class="alert alert-warning">
+        ⚠️ Aún no tienes una <strong>solución inicial</strong> generada.
+        La Fase 2 necesita partir de un resultado de la Fase 1.
+    </div>
+    <a href="{{ url_for('fase1') }}" class="btn btn-primary">
+        Ir a Fase 1 para generar una solución inicial →
+    </a>
+
+{% else %}
+    <!-- Hay solución inicial: mostrarla como punto de partida -->
+    <div class="card mb-4 border-primary">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <strong>Solución inicial (Fase 1) que se usará como punto de partida</strong>
+            <a href="{{ url_for('fase1') }}" class="btn btn-sm btn-outline-primary">Generar otra</a>
+        </div>
+        <div class="card-body">
+            <p class="mb-1"><strong>Método usado:</strong> {{ resultado_fase1.metodo }}</p>
+            <p class="mb-0"><strong>Costo inicial (Z):</strong> {{ resultado_fase1.costo }}</p>
+        </div>
+    </div>
+
+    <form action="{{ url_for('fase2_ejecutar') }}" method="post">
+        <div class="card mb-4">
+            <div class="card-header bg-light">
+                <strong>Selecciona el método de mejora</strong>
+            </div>
+            <div class="card-body">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="radio" name="metodo_mejora"
+                           id="swap_primera_mejora" value="swap_primera_mejora">
+                    <label class="form-check-label" for="swap_primera_mejora">
+                        <strong>Swap (primera mejora)</strong> &mdash; recorre los pares en orden
+                        aleatorio y aplica el primer intercambio que reduzca el costo.
+                    </label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="radio" name="metodo_mejora"
+                           id="busqueda_local_perturbacion" value="busqueda_local_perturbacion">
+                    <label class="form-check-label" for="busqueda_local_perturbacion">
+                        <strong>Búsqueda local con perturbación</strong> &mdash; aplica primera
+                        mejora hasta estancarse, luego perturba aleatoriamente y continúa.
+                    </label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="radio" name="metodo_mejora"
+                           id="descenso_maxima_pendiente" value="descenso_maxima_pendiente" checked>
+                    <label class="form-check-label" for="descenso_maxima_pendiente">
+                        <strong>Descenso de máxima pendiente</strong> &mdash; evalúa todos los
+                        intercambios posibles en cada iteración y aplica el mejor (más exhaustivo).
+                    </label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="radio" name="metodo_mejora"
+                           id="recocido_simulado" value="recocido_simulado">
+                    <label class="form-check-label" for="recocido_simulado">
+                        <strong>Recocido simulado</strong> &mdash; acepta soluciones peores con
+                        cierta probabilidad para escapar de óptimos locales.
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="metodo_mejora"
+                           id="busqueda_tabu" value="busqueda_tabu">
+                    <label class="form-check-label" for="busqueda_tabu">
+                        <strong>Búsqueda tabú</strong> &mdash; prohíbe revertir movimientos
+                        recientes durante un número de iteraciones para evitar ciclos.
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">🚀 Ejecutar mejora</button>
+    </form>
+
+    {% if resultado %}
+    <hr class="my-4">
+    <h4>Resultado de la mejora</h4>
+    <div class="card border-success">
+        <div class="card-body">
+            <p class="mb-1"><strong>Método:</strong> {{ resultado.metodo }}</p>
+            <p class="mb-1"><strong>Costo final (Z):</strong> {{ resultado.costo }}</p>
+            <p class="mb-1"><strong>Tiempo de ejecución:</strong> {{ resultado.tiempo }} s</p>
+            <p class="mb-3">
+                <strong>Mejora respecto a la inicial:</strong>
+                <span class="badge bg-success">{{ resultado.porcentaje_mejora }}%</span>
+            </p>
+
+            <p class="mb-1 small text-muted">Asignación final (Departamento &rarr; Ubicación):</p>
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered text-center">
+                    <thead>
+                        <tr>
+                            {% for i in range(resultado.n) %}<th>D{{ i+1 }}</th>{% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {% for u in resultado.asignacion %}<td>U{{ u+1 }}</td>{% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex gap-2 mt-3">
+                <a href="{{ url_for('exportar_excel') }}" class="btn btn-outline-success btn-sm">
+                    📊 Exportar a Excel
+                </a>
+                <a href="{{ url_for('exportar_pdf') }}" class="btn btn-outline-danger btn-sm">
+                    📄 Exportar a PDF
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endif %}
+{% endblock %}
