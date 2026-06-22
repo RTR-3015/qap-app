@@ -1,0 +1,232 @@
+/* ---------------------------------------------------------------------
+   Paleta de colores
+   - Acento principal: #00CEC8 (turquesa)
+   - Secundario / superficies: azul-gris oscuro, combina con el turquesa
+   - Fondo: oscuro | Texto: claro
+   --------------------------------------------------------------------- */
+:root {
+    --color-fondo: #11181F;
+    --color-superficie: #1B2530;
+    --color-superficie-clara: #243140;
+    --color-borde: #324456;
+    --color-texto: #E7EDF2;
+    --color-texto-muted: #9FB1C1;
+    --color-acento: #00CEC8;
+    --color-acento-oscuro: #00A8A3;
+    --color-secundario: #1B2A33;
+
+    /* Sobreescritura de variables de Bootstrap */
+    --bs-body-bg: var(--color-fondo);
+    --bs-body-color: var(--color-texto);
+    --bs-border-color: var(--color-borde);
+    --bs-primary: #00CEC8;
+    --bs-primary-rgb: 0, 206, 200;
+    --bs-success: #2ECC71;
+    --bs-success-rgb: 46, 204, 113;
+    --bs-secondary: #5B7083;
+    --bs-secondary-rgb: 91, 112, 131;
+    --bs-light: var(--color-superficie-clara);
+    --bs-light-rgb: 36, 49, 64;
+    --bs-dark: var(--color-secundario);
+}
+
+body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+}
+
+/* --- Navbar --- */
+.navbar.bg-dark {
+    background-color: var(--color-secundario) !important;
+    border-bottom: 1px solid var(--color-borde);
+}
+
+.navbar-brand {
+    color: var(--color-acento) !important;
+}
+
+/* --- Tarjetas --- */
+.card {
+    background-color: var(--color-superficie);
+    border-color: var(--color-borde);
+    color: var(--color-texto);
+}
+
+.card-header.bg-light {
+    background-color: var(--color-superficie-clara) !important;
+    color: var(--color-texto);
+    border-color: var(--color-borde);
+}
+
+.card-title {
+    font-weight: 600;
+}
+
+.text-muted {
+    color: var(--color-texto-muted) !important;
+}
+
+/* --- Botones --- */
+.btn-primary {
+    background-color: var(--color-acento);
+    border-color: var(--color-acento);
+    color: #04201F;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--color-acento-oscuro);
+    border-color: var(--color-acento-oscuro);
+    color: #04201F;
+}
+
+.btn-outline-primary {
+    color: var(--color-acento);
+    border-color: var(--color-acento);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--color-acento);
+    border-color: var(--color-acento);
+    color: #04201F;
+}
+
+.btn-outline-secondary {
+    color: var(--color-texto-muted);
+    border-color: var(--color-borde);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--color-superficie-clara);
+    color: var(--color-texto);
+    border-color: var(--color-borde);
+}
+
+.btn-outline-success:hover {
+    color: #04201F;
+}
+
+/* --- Texto y bordes de color --- */
+.text-primary {
+    color: var(--color-acento) !important;
+}
+
+.border-primary {
+    border-color: var(--color-acento) !important;
+}
+
+/* --- Formularios --- */
+.form-control {
+    background-color: var(--color-superficie-clara);
+    border-color: var(--color-borde);
+    color: var(--color-texto);
+}
+
+.form-control:focus {
+    background-color: var(--color-superficie-clara);
+    border-color: var(--color-acento);
+    color: var(--color-texto);
+    box-shadow: 0 0 0 0.25rem rgba(0, 206, 200, 0.25);
+}
+
+.form-control::placeholder {
+    color: var(--color-texto-muted);
+}
+
+.form-check-input {
+    background-color: var(--color-superficie-clara);
+    border-color: var(--color-borde);
+}
+
+.form-check-input:checked {
+    background-color: var(--color-acento);
+    border-color: var(--color-acento);
+}
+
+/* --- Tablas --- */
+.table {
+    color: var(--color-texto);
+    border-color: var(--color-borde);
+}
+
+.table > :not(caption) > * > * {
+    background-color: transparent;
+    color: var(--color-texto);
+    border-color: var(--color-borde);
+}
+
+.matriz-tabla input {
+    min-width: 60px;
+}
+
+.matriz-tabla th {
+    background-color: var(--color-superficie-clara);
+    font-size: 0.85rem;
+}
+
+.table-success,
+.table-success > * {
+    background-color: rgba(46, 204, 113, 0.15) !important;
+    color: var(--color-texto);
+}
+
+/* --- Alertas --- */
+.alert-info {
+    background-color: rgba(0, 206, 200, 0.12);
+    border-color: var(--color-acento);
+    color: var(--color-texto);
+}
+
+.alert-success {
+    background-color: rgba(46, 204, 113, 0.12);
+    border-color: #2ECC71;
+    color: var(--color-texto);
+}
+
+.alert-danger {
+    background-color: rgba(235, 87, 87, 0.12);
+    border-color: #EB5757;
+    color: var(--color-texto);
+}
+
+.alert-warning {
+    background-color: rgba(242, 201, 76, 0.12);
+    border-color: #F2C94C;
+    color: var(--color-texto);
+}
+
+.btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* --- Footer --- */
+footer {
+    border-top: 1px solid var(--color-borde);
+    color: var(--color-texto-muted);
+}
+
+/* --- Sombras (ajustadas para fondo oscuro) --- */
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.5) !important;
+}
+
+/* --- Tarjetas de fase (dashboard) --- */
+.fase-card {
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    cursor: pointer;
+}
+
+.fase-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 206, 200, 0.18) !important;
+}
+
+/* --- Badges --- */
+.badge.bg-success {
+    background-color: #2ECC71 !important;
+    color: #04201F;
+}
+
+.badge.bg-secondary {
+    background-color: var(--color-borde) !important;
+}
