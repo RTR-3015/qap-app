@@ -44,6 +44,19 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/borrar_datos", methods=["GET"])
+def borrar_datos():
+    """
+    Borra todos los datos de la sesión (matrices, resultados de ambas fases)
+    desde el dashboard principal. A diferencia de fase1_reiniciar, esta
+    limpieza es total: se usa cuando el usuario quiere empezar un problema
+    completamente nuevo.
+    """
+    session.clear()
+    flash("Se borraron todos los datos. Puedes empezar un nuevo problema.", "success")
+    return redirect(url_for("index"))
+
+
 # ===========================================================================
 # FASE 1 — Heurístico de construcción
 # ===========================================================================

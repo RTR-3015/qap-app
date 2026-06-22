@@ -127,24 +127,32 @@
     <div class="card border-success">
         <div class="card-body">
             <p class="mb-1"><strong>Método:</strong> {{ resultado.metodo }}</p>
-            <p class="mb-1"><strong>Costo final (Z):</strong> {{ resultado.costo }}</p>
             <p class="mb-1"><strong>Tiempo de ejecución:</strong> {{ resultado.tiempo }} s</p>
             <p class="mb-3">
                 <strong>Mejora respecto a la inicial:</strong>
                 <span class="badge bg-success">{{ resultado.porcentaje_mejora }}%</span>
             </p>
 
-            <p class="mb-1 small text-muted">Asignación final (Departamento &rarr; Ubicación):</p>
+            <p class="mb-1 small text-muted">Comparación de soluciones (Departamento &rarr; Ubicación):</p>
             <div class="table-responsive">
                 <table class="table table-sm table-bordered text-center">
                     <thead>
                         <tr>
+                            <th></th>
                             {% for i in range(resultado.n) %}<th>D{{ i+1 }}</th>{% endfor %}
+                            <th>Costo (Z)</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
+                            <th class="text-muted">Inicial</th>
+                            {% for u in resultado_fase1.asignacion %}<td>U{{ u+1 }}</td>{% endfor %}
+                            <td>{{ resultado_fase1.costo }}</td>
+                        </tr>
+                        <tr class="table-success">
+                            <th>Final</th>
                             {% for u in resultado.asignacion %}<td>U{{ u+1 }}</td>{% endfor %}
+                            <td>{{ resultado.costo }}</td>
                         </tr>
                     </tbody>
                 </table>

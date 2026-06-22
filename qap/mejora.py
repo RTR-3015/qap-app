@@ -14,19 +14,32 @@ def delta_swap(asignacion, flujo, distancia, p, q):
     Calcula el cambio en el costo (delta) al intercambiar las ubicaciones
     asignadas a los departamentos p y q, SIN recalcular todo el costo
     desde cero (más eficiente que recalcular Z completo).
+
+    Válida para matrices de flujo y/o distancia ASIMÉTRICAS (f_ij != f_ji).
+    Incluye el término cruzado entre p y q, que cambia de valor cuando las
+    matrices no son simétricas y que una versión simplificada del cálculo
+    podría omitir por error.
     """
     n = len(asignacion)
     a = asignacion
     delta = 0.0
+
     for k in range(n):
         if k == p or k == q:
             continue
         delta += (
-            flujo[p][k] * (distancia[a[q]][a[k]] - distancia[a[p]][a[k]])
-            + flujo[q][k] * (distancia[a[p]][a[k]] - distancia[a[q]][a[k]])
-            + flujo[k][p] * (distancia[a[k]][a[q]] - distancia[a[k]][a[p]])
-            + flujo[k][q] * (distancia[a[k]][a[p]] - distancia[a[k]][a[q]])
+            (flujo[p][k] - flujo[q][k]) * (distancia[a[q]][a[k]] - distancia[a[p]][a[k]])
+            + (flujo[k][p] - flujo[k][q]) * (distancia[a[k]][a[q]] - distancia[a[k]][a[p]])
         )
+
+    # Término del par (p, q) entre sí: al intercambiar sus ubicaciones,
+    # f[p][q]*d[a[p]][a[q]] pasa a ser f[p][q]*d[a[q]][a[p]] (y simétricamente
+    # para f[q][p]). Si las matrices son simétricas este término es 0.
+    delta += (
+        flujo[p][q] * (distancia[a[q]][a[p]] - distancia[a[p]][a[q]])
+        + flujo[q][p] * (distancia[a[p]][a[q]] - distancia[a[q]][a[p]])
+    )
+
     return delta
 
 
