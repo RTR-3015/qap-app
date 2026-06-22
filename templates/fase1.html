@@ -24,6 +24,18 @@
                     <button type="submit" class="btn btn-primary w-100">Continuar</button>
                 </div>
             </form>
+
+            <div class="d-flex align-items-center gap-2 mt-3">
+                <hr class="flex-grow-1">
+                <span class="text-muted small">o</span>
+                <hr class="flex-grow-1">
+            </div>
+
+            <form action="{{ url_for('fase1_cargar_ejemplo') }}" method="post" class="mt-2">
+                <button type="submit" class="btn btn-outline-primary w-100">
+                    Cargar problema de ejemplo (4&times;4)
+                </button>
+            </form>
         </div>
     </div>
 

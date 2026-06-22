@@ -35,6 +35,24 @@ from qap.mejora import (
 app = Flask(__name__)
 app.secret_key = "cambia-esta-clave-en-produccion"  # TODO: usar variable de entorno
 
+# Problema de ejemplo fijo (4x4), con matrices simétricas (f_ij = f_ji,
+# d_ij = d_ji), diagonal principal en cero y sin valores negativos.
+# Útil para pruebas rápidas y reproducibles.
+PROBLEMA_EJEMPLO = {
+    "flujo": [
+        [0, 6, 1, 19],
+        [6, 0, 3, 11],
+        [1, 3, 0, 23],
+        [19, 11, 23, 0],
+    ],
+    "distancia": [
+        [0, 10, 2, 5],
+        [10, 0, 11, 13],
+        [2, 11, 0, 11],
+        [5, 13, 11, 0],
+    ],
+}
+
 
 # ---------------------------------------------------------------------------
 # Dashboard principal
@@ -119,6 +137,22 @@ def fase1_guardar_matrices():
 
     _guardar_datos_en_sesion(flujo, distancia)
     flash("Matrices guardadas correctamente.", "success")
+    return redirect(url_for("fase1"))
+
+
+@app.route("/fase1/cargar_ejemplo", methods=["POST"])
+def fase1_cargar_ejemplo():
+    """
+    Carga el problema de ejemplo fijo (PROBLEMA_EJEMPLO) directamente en
+    sesión, sin pasar por el formulario de captura manual. Útil para
+    pruebas rápidas y reproducibles de los métodos de construcción/mejora.
+    """
+    flujo = np.array(PROBLEMA_EJEMPLO["flujo"], dtype=float)
+    distancia = np.array(PROBLEMA_EJEMPLO["distancia"], dtype=float)
+    flujo, distancia = validar_matrices(flujo, distancia)
+
+    _guardar_datos_en_sesion(flujo, distancia)
+    flash("Problema de ejemplo cargado correctamente.", "success")
     return redirect(url_for("fase1"))
 
 
